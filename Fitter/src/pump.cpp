@@ -103,4 +103,71 @@ class pump{
 
     }
 
+    std::string fast_create_HQ_file(){//tworzy plik z punktami z parabolą(użytkownik nic nie wpisuje), zwraca nazę pliku w formacie "nazwa pompy+HQ.txt"
+        std::vector<point> QH_points;
+        for(int i = 0; i < 6 ; i++){
+            float X=i+1;
+            float Y=pow(X,2);
+            point *pt = new point(X,Y);
+            X=0;
+            Y=0;
+            QH_points.push_back(*pt);
+            delete pt;
+        }
+
+        std::ofstream file;
+        std::string current_name=name+"_HQ.txt";
+        file.open(current_name.c_str());
+        for (point p : QH_points)
+        {   
+            for (size_t i = 0; i < 2; i++)
+            {
+                file<<*(p.print()+i)<<"\n";
+            }  
+        }
+        
+        file.close();
+
+        std::ofstream name_file;
+
+        name_file.close();
+        return current_name;
+    }
+
+    std::string fast_create_PQ_file(){
+           std::vector<point> PQ_points;
+        for(int i = 0; i < 2 ; i++){
+            float X=i+1;
+            float Y=X;
+            point *pt = new point(X,Y);
+            // for (size_t i = 0; i < 2; i++)
+            // {
+            //     std::cout<<*(pt->print()+i)<<"\n";
+            // }  
+            X=0;
+            Y=0;
+            PQ_points.push_back(*pt);
+            delete pt;
+        }
+
+        std::ofstream file;
+        std::string current_name=name+"_PQ.txt";
+        file.open(current_name.c_str());
+        for (point p : PQ_points)
+        {   
+            for (size_t i = 0; i < 2; i++)
+            {
+                file<<*(p.print()+i)<<"\n";
+            }  
+        }
+        
+        file.close();
+
+        std::ofstream name_file;
+
+        name_file.close();
+        return current_name;
+
+    }
+
 };

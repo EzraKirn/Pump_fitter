@@ -18,6 +18,11 @@ struct point{
         std::cin>>pos[1];
     }
 
+    point(float X,float Y){
+        pos[0]=X;
+        pos[1]=Y; 
+    }
+
     float* print(){
         return pos;
     }
