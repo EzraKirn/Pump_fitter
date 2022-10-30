@@ -7,8 +7,10 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${fileDirname}\\*cpp",
-                "${fileDirname}\\*h",
+                "-Wall",
+                //"${file}",   
+                "${fileDirname}\\*.cpp",   
+                //"${fileDirname}\\**.h",
                 "-o",
                 "${fileDirname}\\executable\\${fileBasenameNoExtension}.exe"
             ],
