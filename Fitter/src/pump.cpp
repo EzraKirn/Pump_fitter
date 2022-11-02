@@ -170,4 +170,29 @@ class pump{
 
     }
 
+    void store_coef_to_vector(){
+        std::fstream name_files(File_name_storage);
+        std::vector<std::string> names;
+        std::string tmp;
+        while (std::getline(name_files , tmp))
+        {
+            names.push_back(tmp);
+            std::cout<<tmp;
+    
+        }
+        
+
+
+        name_files.close();
+        
+        for(std::string n:names){
+
+        }
+        
+    }
+    
+    void generate_dataset(){
+        
+    }
+
 };

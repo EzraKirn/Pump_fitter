@@ -4,7 +4,9 @@
 #include <limits>
 #include <vector>
 #include <thread>
-#include "src\UI.cpp"
+#include "src\pump.cpp"
+#include "src\cleanup.cpp"
+
 
 #define GRAVITY 9.81
 #define WATER_DENSITY 998
@@ -17,43 +19,77 @@ std::fstream& GotoLine(std::fstream& file, unsigned int num){
     return file;
 }
 
-void generate_dataset(){
-    std::fstream file;
-    file.open("file_names.txt");
-    std::vector<std::string> names;
-    std::vector< std::vector<float> > coef;    
-
-    for (std::string line;std::getline(file,line);)
-    {
-        names.push_back(line);
-    }
-
-    file.close();
-
-    for(std::string S : names){
-        file.open(S.c_str());
-        std::vector<float> vec;
-        for (std::string line;std::getline(file,line);)
-            {
-                vec.push_back(std::stof(line));
-            }
-        coef.push_back(vec);
-        file.close();
-    }
-    
-    //     std::cout<<"\n";
-    //     std::cout<<"\n";
-
-    // for(std::vector<float> c : coef){
-    //     for(float d : c){
-    //         std::cout<<d<<"\n";
-    //     }
-    //     std::cout<<"\n";
-    //}
-
+void turn_namefiles_content_into_function(){
+    system("src\\calculate_coeficients.py");
 }
 
 int main(){
-        show();
+    start:
+    std::cout<<"1. Run\n";
+    std::cout<<"2. Fast run\n";
+    std::cout<<"3. Cleanup\n";
+    std::cout<<"4. End\n";
+    int c;
+    std::cin>>c;
+    switch (c)
+    {
+        case 1:{
+            std::string name;
+            float input[4];
+            std::cout<<"Podaj dane wejiowe"<<"\n";
+            
+            std::cout<<"Nawa pompy: ";
+            std::cin>>name;
+
+            std::cout<<"Hg: ";
+            std::cin>>input[0];
+
+            std::cout<<"Hd: ";
+            std::cin>>input[1];
+
+            std::cout<<"Q: ";
+            std::cin>>input[2];
+
+            std::cout<<"n: ";
+            std::cin>>input[3];
+
+            pump pump1(name,input[0],input[1] ,input[2] ,input[3]);     
+            pump1.store_to_namefile(pump1.create_HQ_file());
+            pump1.store_to_namefile(pump1.create_PQ_file());
+
+            std::thread python(turn_namefiles_content_into_function);
+            python.join();
+            break;
+        }
+        case 2:{
+            std::string name;
+            float input[4];
+            name="80-250-1";
+            input[0]=2;
+            input[1]=91;
+            input[2]=147;
+            input[3]=3000;
+
+            pump pump1(name,input[0],input[1] ,input[2] ,input[3]);     
+            pump1.store_to_namefile(pump1.fast_create_HQ_file());
+            pump1.store_to_namefile(pump1.fast_create_PQ_file());
+
+            std::thread python(turn_namefiles_content_into_function);
+            python.join();
+            break;
+        }
+        case 3:
+            cleanup();
+            break;
+        
+        case 4:
+            goto end;
+            break;
+    }
+    goto start;
+
+    end:
+    getchar();
+
     return 0;
 }
