@@ -26,4 +26,10 @@ struct point{
     float* print(){
         return pos;
     }
+    
+    void edit(float X, float Y){
+        pos[0]=X;
+        pos[1]=Y;
+    }
+
 };

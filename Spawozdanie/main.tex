@@ -1,0 +1,36 @@
+\documentclass[
+12pt, % Main document font size
+a4paper, % Paper type, use 'letterpaper' for US Letter paper
+oneside, % One page layout (no page indentation)
+%twoside, % Two page layout (page indentation for binding and different headers)
+]{article}
+
+\include{../../structure.tex}
+\include{../../titles.tex}
+\include{../../units.tex}
+
+\begin{document}
+    \titleterma{18}{temat}{N02-20g}{17.03}{24.03}
+
+    \includepdf{Figures/PDF/Protokol_pomiarowy.pdf}
+
+    \tableofcontents
+    \listoffigures
+    \listoftables
+    \begin{landscape}
+        \begin{figure}
+            \section{Stanowisko pomiarowe}
+            \centering
+            \includegraphics[width=\linewidth-142px]
+                {Figures/PDF/Stanowisko_pomiarowe.pdf}
+                \caption{Shemat budowy stanowiska pomiarowego z wyszczególnionymi elementami oraz pokazanym sposobem podlączenia.}
+        \end{figure}
+    \end{landscape}
+    \include{Sections/Tabele_wynikowo_pomiarowe.tex}
+    \include{Sections/przykładowe_obliczenia.tex}
+    \include{Sections/Wykresy.tex}
+    \include{Sections/Wnioski.tex}
+     
+    %\bibliographystyle{plain} 
+    %\bibliography{main}
+\end{document}

@@ -7,9 +7,11 @@
 #include "src\pump.cpp"
 #include "src\cleanup.cpp"
 
+#include <glm/exponential.hpp>
 
-#define GRAVITY 9.81
-#define WATER_DENSITY 998
+
+
+
 
 std::fstream& GotoLine(std::fstream& file, unsigned int num){
     file.seekg(std::ios::beg);
@@ -31,11 +33,10 @@ int main(){
     std::cout<<"4. End\n";
     int c;
     std::cin>>c;
-    switch (c)
-    {
+    switch (c){
         case 1:{
-            std::string name;
-            float input[4];
+                std::string name;
+                float input[4];
             std::cout<<"Podaj dane wejiowe"<<"\n";
             
             std::cout<<"Nawa pompy: ";
@@ -59,6 +60,9 @@ int main(){
 
             std::thread python(turn_namefiles_content_into_function);
             python.join();
+            pump1.store_coef_to_vector();
+            pump1.store_to_namefile(pump1.generate_dataset());
+            break;
             break;
         }
         case 2:{
@@ -76,6 +80,11 @@ int main(){
 
             std::thread python(turn_namefiles_content_into_function);
             python.join();
+            pump1.store_coef_to_vector();
+            pump1.store_to_namefile(pump1.generate_dataset());
+            pump1.goodnes();
+            getchar();
+            getchar();
             break;
         }
         case 3:
@@ -90,6 +99,8 @@ int main(){
 
     end:
     getchar();
+    
+    // std::cout<<glm::pow(2,2);
 
     return 0;
 }
