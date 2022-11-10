@@ -222,7 +222,7 @@ class pump{
     }
     
     float value_of_Ph(float Q){
-        return (WATER_DENSITY*GRAVITY*(Q/3600)*value_of_H(Q))/1000;
+        return (WATER_DENSITY*GRAVITY*(Q/3600)*value_of_H(Q));
     }
     
     float value_of_ni(float Q){
@@ -230,7 +230,7 @@ class pump{
     }
     
     float value_of_e(float Q){
-        return value_of_P(Q)/(Q*1000);
+        return (value_of_P(Q)/Q)/1000;
     }
     
     std::string generate_dataset(){
@@ -252,46 +252,49 @@ class pump{
                 data<<i<<","<<data_H<<","<<data_P<<","<<data_Ph<<","<<data_ni<<","<<data_e<<","<<data_dHu<<"\n";
             }
             else{
-                data<<i<<","<<data_H<<","<<data_P<<","<<data_Ph<<","<<data_ni<<","<<data_e<<","<<data_dHu<<","<<"Punkt pracy"<<"\n";
+                data<<i<<","<<data_H<<","<<data_P<<","<<data_Ph<<","<<data_ni<<","<<data_e<<","<<data_dHu<</*","<<"Punkt pracy"<<*/"\n";
                 point *wp = new point(i,data_dHu);
                 work_points.push_back(*wp);
                 delete wp;
             }
         }
-        data.close();
         float sum_Q, sum_H;
         for(point p : work_points){
             sum_Q+=*(p.print());
             sum_H+=*(p.print()+1);
         }
-
+        data.close();
+        data.open("fit_data_"+name+".csv");
         work_point.edit(sum_Q/work_points.size(),sum_H/work_points.size());
+        data<<*(work_point.print())<<","<<*(work_point.print()+1);
+        data.close();
+
         std::cout<<"punkt pracy to : ("<<*(work_point.print())<<" , "<<*(work_point.print()+1)<<")"<<std::endl;
 
         getchar();
-        return "dataset_"+name+".csv";
+        return "dataset_"+name+".csv"+"\nfit_data_"+name+".csv";
     }
 
     float score_work_point_accuracy(){
-        float weight_work_point_accuracy;
-        cout<<"Podaj wagę(miedzu 0 i 1) dla: \nDokładność doboru: ";
-        std::cin>>weight_work_point_accuracy;
+        float weight_work_point_accuracy=0.8;
+        // cout<<"Podaj wagę(miedzu 0 i 1) dla: \nDokładność doboru: ";
+        // std::cin>>weight_work_point_accuracy;
 
         std::ofstream data_file;
-        data_file.open("dataset_"+name+".csv",std::ios_base::app);
-        data_file<<"\n\n"<<"Dokładność doboru"<<","<< 10/std::sqrt( std::pow (std::abs(Hd_d-*(work_point.print())),2) + std::pow( std::abs(Hd_d-*(work_point.print()+1)),2)) <<","<<"Waga"<<","<<weight_work_point_accuracy<<"\n";
+        data_file.open("fit_data_"+name+".csv",std::ios_base::app);
+        data_file<<"\n\n"<<"Dokładność doboru"<<","<< 10/std::sqrt( std::pow (std::abs(Q_d-*(work_point.print())),2) + std::pow( std::abs(Hd_d-*(work_point.print()+1)),2)) <<","<<"Waga"<<","<<weight_work_point_accuracy<<"\n";
         data_file.close();
         
         return 10/std::sqrt( std::pow (std::abs(Hd_d-*(work_point.print())),2) + std::pow( std::abs(Hd_d-*(work_point.print()+1)),2))*weight_work_point_accuracy;
     }
   
     float score_efficiency_in_wanted_work_point(){
-        float weight_efficiency_in_wanted_work_point;
-        cout<<"Sprawność dal założonego punktu pracy: ";
-        std::cin>>weight_efficiency_in_wanted_work_point;
+        float weight_efficiency_in_wanted_work_point=0.6;
+        // cout<<"Sprawność dal założonego punktu pracy: ";
+        // std::cin>>weight_efficiency_in_wanted_work_point;
 
         std::ofstream data_file;
-        data_file.open("dataset_"+name+".csv",std::ios_base::app);
+        data_file.open("fit_data_"+name+".csv",std::ios_base::app);
         data_file<<"Sprawność dal założonego punktu pracy"<<","<< value_of_ni(Q_d) <<","<<"Waga"<<","<<weight_efficiency_in_wanted_work_point<<"\n";
         data_file.close();
 
@@ -299,15 +302,15 @@ class pump{
     }
 
     float score_power_per_cubic_meater_in_wanted_work_point(){
-        float weight_power_per_cubic_meater_in_wanted_work_point;
-        cout<<"Moc na metr sześcienny przepływu: ";
-        std::cin>>weight_power_per_cubic_meater_in_wanted_work_point;
+        float weight_power_per_cubic_meater_in_wanted_work_point=0.3;
+        // cout<<"Moc na metr sześcienny przepływu: ";
+        // std::cin>>weight_power_per_cubic_meater_in_wanted_work_point;
 
         std::ofstream data_file;
-        data_file.open("dataset_"+name+".csv",std::ios_base::app);
+        data_file.open("fit_data_"+name+".csv",std::ios_base::app);
         data_file<<"Moc na metr sześcienny przepływu"<<","<<1/value_of_e(Q_d)<<","<<"Waga"<<"," <<weight_power_per_cubic_meater_in_wanted_work_point<<"\n";
         data_file.close();
-        return 1/value_of_e(Q_d)*weight_power_per_cubic_meater_in_wanted_work_point;
+        return value_of_e(Q_d)*weight_power_per_cubic_meater_in_wanted_work_point;
     }
 
     void goodnes(){
@@ -323,7 +326,7 @@ class pump{
         cout<<"\nPompa uzyskała ocenę dobroci doboru: "<<sc<<std::endl;
         
         std::ofstream data_file;
-        data_file.open("dataset_"+name+".csv",std::ios_base::app);
+        data_file.open("fit_data_"+name+".csv",std::ios_base::app);
         data_file<<"Ocena doboru"<<","<<sc;
         data_file.close();
     }

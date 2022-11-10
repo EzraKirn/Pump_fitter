@@ -1,12 +1,76 @@
 \section{Przykładowe obliczenia}
 
 \begin{flushleft}
-    Wyliczenie wysokości krytycznej
+    Wyliczenie mocy hydraulicznej
     \begin{equation}
-        h_{kr}=\sqrt[3]{\frac{\alpha \cdot {q_v}^2}{g\cdot b^2}} 
+        P_h=Q\cdot H\cdot \rho_{H_2O}\cdot g 
     \end{equation}
     \centering
-    $ h_{kr}=\sqrt[3]{\frac{\alpha \cdot {\frac{6.2\frac{m^3}{h}}{3600}}^2}{9.81\cdot 0.025^2}}=43,mm$
+    \(P_h=0.1\FLOWRATEh\cdot 101.3m \cdot 997 \DENSITY \cdot 9.81 \ACCELERATION = 27.5498 \frac{kg\cdot m^2}{s^3 \cdot 3600}\)
+\end{flushleft} 
+
+\begin{flushleft}
+    Wyliczenie mocy sprawności
+    \begin{equation}
+        \eta = \frac{P}{P_h} 
+    \end{equation}
+    \centering
+    \(\eta = \frac{22422.2 W}{9362.88 W}=0.417571\)
+\end{flushleft} 
+
+\begin{flushleft}
+    Wyliczenie mocy na metr sześcienny przepływu
+    \begin{equation}
+        e=\frac{P}{Q} 
+    \end{equation}
+    \centering
+    \(e=\frac{\frac{22195.6 W}{1000}}{32.8001\FLOWRATEh} =0.676693\frac{kW\cdot H}{m^3}\)
+\end{flushleft} 
+
+\begin{flushleft}
+    Wyliczenie współczynnika R
+    \begin{equation}
+        R=\frac{H_d-H_g}{Q^2}
+    \end{equation}
+    \centering
+    \(R=\frac{91 m - 2 m}{147^2\FLOWRATEh}=0.004118654\)
+\end{flushleft}
+
+\begin{flushleft}
+    Wyliczenie równania pompy
+    \begin{equation}
+        dHu(Q)=H_g+RQ^2
+    \end{equation}
+    \centering
+    \(dHu(Q)=2+ 0.004118654 Q^2\)
+\end{flushleft} 
+
+\begin{flushleft}
+    Wyliczenie dokładności doboru
+    \begin{equation}
+        w_1=\frac{10}{\sqrt{\left(\lvert Q_{p.pracy}-Q_d\rvert\right)^2+\left(\lvert H_{p.pracy}-H_{d_d}\rvert\right)^2}}
+    \end{equation}
+\end{flushleft} 
+
+\begin{flushleft}
+    Wyliczenie sprawności w założonym punkcie pracy
+    \begin{equation}
+        w_2=\frac{Q_d\cdot H\cdot \rho_{H_2O}\cdot g}{P(Q_d)}
+    \end{equation}
+\end{flushleft} 
+
+\begin{flushleft}
+    Wyliczenie mocy na metr sześcienny w założonym punkcie pracy
+    \begin{equation}
+        w_3=\frac{P(Q_d)}{Q_d}
+    \end{equation}
+\end{flushleft} 
+
+\begin{flushleft}
+    Ocena wyboru
+    \begin{equation}
+        \sum_{n = 1}^{\infty}  w_n\cdot i_n
+    \end{equation}
 \end{flushleft} 
 
     
